@@ -1,6 +1,8 @@
 Webscrabing:
 Make a method that takes a string, and searches https://roll20.net/compendium/dnd5e/ for that string, and returns the resulting text. Add Selenium, by using the searchbar, and selecting the right object from list.
 
+##delete this line <--
+
 Graphs & Nodes:
 Show synergy between either feats, classes, or other, where the node-size is reletive to the amount of the class, and the edges thickness reletive to the amount that have both instances.
 
