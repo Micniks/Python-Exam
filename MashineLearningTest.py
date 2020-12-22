@@ -10,9 +10,12 @@ data = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs
 #display(data)
 
 class DNDClassPredictor:
-    def __init__(self):
+    def __init__(self, dataset):
         #Get data from dataset
-        self.dataset = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
+        if dataset is None:
+            self.dataset = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
+        else:
+            self.dataset = dataset
         self.__features = self.dataset[['Str','Dex','Con','Wis','Int','Cha']]
         targets = self.dataset[['justClass']]
 
@@ -83,8 +86,8 @@ if __name__ == '__main__':
             for score in input:
                 ability_scores.append(int(score)) 
 
-            test = DNDClassPredictor()
-            result = test.predict_class_from_ability_scores(ability_scores)
+            classPredictor = DNDClassPredictor(None)
+            result = classPredictor.predict_class_from_ability_scores(ability_scores)
             msg = "The given ability scores would work well with a class choice of " + result
             print(msg) 
         except ValueError:
