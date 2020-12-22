@@ -1,16 +1,11 @@
 import pandas as pd
 import numpy as np
-import pandas as pd
-import numpy as np
 import argparse
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
-data = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
-#display(data)
-
 class DNDClassPredictor:
-    def __init__(self, dataset):
+    def __init__(self, dataset = None):
         #Get data from dataset
         if dataset is None:
             self.dataset = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
@@ -42,15 +37,18 @@ class DNDClassPredictor:
         self.__classes_numeric_dict = {y:x for x,y in self.__classes_dict.items()}
         
         #Using another class method to make a fit a model for prediction, and check if the model has good test results
-        min_test_score = 0.6
+        min_test_score = 0.4
         test_score = 0
         found_good_model = False
-        for num in (range(1,101)):
-            test_score = self.fit_class_model()
-            if (test_score >= min_test_score):
+        for num in (range(1,1001)):
+            model = self.fit_class_model()
+            if (model["test_score"] >= min_test_score):
                 found_good_model = True
-                #print('Found a good model after', num, 'attempts')
+                self.__model = model["model"]
                 break
+            elif (model["test_score"] > test_score):
+                self.__model = model["model"]
+                test_score = model["test_score"]
         if(not found_good_model):
             print('WARNING: The model could not achive a good test score, and is only', test_score*100, 'accurate in test')
         
@@ -58,12 +56,12 @@ class DNDClassPredictor:
         #Setting up the model, and testing with classification
         x_train,x_test,y_train,y_test = train_test_split(self.__features,self.__targets,test_size=0.3)
         
-        self.__model = DecisionTreeClassifier()
-        self.__model.fit(x_train, y_train)
+        model = DecisionTreeClassifier()
+        model.fit(x_train, y_train)
 
         #Display the score for the model from the dataset
-        test_score = self.__model.score(x_test, y_test)
-        return test_score
+        test_score = model.score(x_test, y_test)
+        return {"model": model, "test_score": test_score}
         
         #print('Train Score:', self.__model.score(x_train, y_train))
         #print('Testing Score', self.__model.score(x_test, y_test))     
@@ -86,7 +84,7 @@ if __name__ == '__main__':
             for score in input:
                 ability_scores.append(int(score)) 
 
-            classPredictor = DNDClassPredictor(None)
+            classPredictor = DNDClassPredictor()
             result = classPredictor.predict_class_from_ability_scores(ability_scores)
             msg = "The given ability scores would work well with a class choice of " + result
             print(msg) 
