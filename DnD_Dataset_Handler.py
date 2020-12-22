@@ -6,8 +6,10 @@ official_dnd_classes = ['Artificer', 'Barbarian', 'Bard', 'Blood hunter', 'Cleri
 official_dnd_races = ['Dragonborn', 'Dwarf', 'Elf', 'Gnome', 'Half-Elf', 'Halfling', 'Half-Orc', 'Human', 'Tiefling', 'Aasimar', 'Bugbear', 'Firbolg', 'Goblin', 'Hobgoblin', 'Kenku', 'Kobold', 'Lizardfolk', 'Orc', 'Tabaxi','Triton', 'Changeling', 'Kalashtar', 'Shifter', 'Warforged']
 
 class DND_Dataset_handler:
-    def __init__(self, link = default_link):
+    def __init__(self, link = default_link, cleanData = True):
         self.dataset = self.pull(link)
+        if cleanData:
+            self.clean_dataset()
         
     def pull(self, link):
         if link is None:
