@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.keys import Keys
 
+#path = r'C:\Users\cahit\Desktop\PythonTest\docker_notebooks\notebooks\my_notebooks\Pyth_exam\Python-Exam\geckodriver')
  
 class Webscraber:
     
