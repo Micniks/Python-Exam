@@ -49,7 +49,7 @@ class DND_Dataset_handler:
         for idx in all_index:
             full_race = self.dataset['race'][idx]
             race = full_race.split()[len(full_race.split())-1]
-            self.dataset.loc[idx, ('race')] = race
+            self.dataset.loc[idx, ('race')] = race.capitalize()
             if race.capitalize() not in official_dnd_races:
                 indexes_to_remove.append(idx)
         self.dataset.drop(indexes_to_remove, inplace=True)
@@ -60,9 +60,9 @@ class DND_Dataset_handler:
         
     def getSpecificCharacters(self, category, value):
         if category in ['race', 'name', 'justClass', 'class']:
-            return self.dataset.loc[test.dataset[category].str.contains(value)]
+            return self.dataset.loc[self.dataset[category].str.contains(value)]
         else:
-            return self.dataset.loc[test.dataset[category] == value]
+            return self.dataset.loc[self.dataset[category] == value]
         
     def saveToFile(self, fileName = default_fileName):
         self.dataset.to_csv(fileName, sep = '\t')
