@@ -4,11 +4,21 @@ import argparse
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 
+default_dataset = 'https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv'
+
 class DNDClassPredictor:
+    """
+    This class use machine-learning in order to make guesses on good class choices based on a choosen ability score
+    """
+    
     def __init__(self, dataset = None):
+        """
+        Initiate the class, either with a given dataset, or it will pull from the default dataset.
+        """
+        
         #Get data from dataset
         if dataset is None:
-            self.dataset = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
+            self.dataset = pd.read_csv(default_dataset, sep='\t')
         else:
             self.dataset = dataset
         self.__features = self.dataset[['Str','Dex','Con','Wis','Int','Cha']]
@@ -53,6 +63,10 @@ class DNDClassPredictor:
             print('WARNING: The model could not achive a good test score, and is only', test_score*100, 'accurate in test')
         
     def fit_class_model(self):
+        """
+        Method to get dict containing a model fit with data from the dataset, along with a score for the mo.del
+        """
+        
         #Setting up the model, and testing with classification
         x_train,x_test,y_train,y_test = train_test_split(self.__features,self.__targets,test_size=0.3)
         
@@ -67,9 +81,13 @@ class DNDClassPredictor:
         #print('Testing Score', self.__model.score(x_test, y_test))     
         
     def predict_class_from_ability_scores(self, ability_scores):
+        """
+        Uses the class model to try and predict a good class choice for a given ability score, based on the dataset.
+        """
+        
         numeric_result = self.__model.predict([ability_scores])[0]
         result = self.__classes_numeric_dict[numeric_result]
-        return result
+        return "The given ability scores would work well with a class choice of: " + result
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='This program allows you to input 6 ability scores for dungeons and dragons 5th edition, and get a suitable class for those ability scores as output')
@@ -86,7 +104,7 @@ if __name__ == '__main__':
 
             classPredictor = DNDClassPredictor()
             result = classPredictor.predict_class_from_ability_scores(ability_scores)
-            msg = "The given ability scores would work well with a class choice of " + result
+            msg = "The given ability scores would work well with a class choice of: " + result
             print(msg) 
         except ValueError:
             print("One or more of the ability scores could not be read as a numbers") 

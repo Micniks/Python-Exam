@@ -4,10 +4,17 @@ import pandas as pd
 default_dataframe_link = 'https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv'
 
 class ClassRaceSynergy:
+    """
+    This class shows datatables for synergy between race and class choices from the given dataset
+    """
     
-    def __init__(self, dataframe):
-        if dataframe is not None:
-            self.dataset = dataframe
+    def __init__(self, dataset):
+        """
+        Initiate the class with either a dataset pulled from the default source, or use a given dataset.
+        """
+        
+        if dataset is not None:
+            self.dataset = dataset
         else:
             data_handler = dh.DND_Dataset_handler(default_dataframe_link)
             self.dataset = data_handler.dataset
@@ -15,6 +22,9 @@ class ClassRaceSynergy:
         
         
     def __get_table_data(self):
+        """
+        This method is for setting up values for any of the table methods, by counting the races, classes and synergies in between.
+        """
         
         # Get List of single class strings, not including any multiclasses
         class_list = [c.split('|') for c in self.dataset['justClass'].drop_duplicates()]
@@ -44,9 +54,11 @@ class ClassRaceSynergy:
         return cross_count
         
         
-    # To get a table where each synergy is counted, messured in the counts as ints
-    def get_count_table(self):    
-        # Setting up the data_dict
+    def get_count_table(self):
+        """
+        Returns a dataframe for a table, where each choice of race(row) and class(column) combination in shown numerically.
+        """
+        
         cross_count = self.__get_table_data()
         result_data = {}
         for c in self.__single_class_list:
@@ -58,9 +70,12 @@ class ClassRaceSynergy:
         return result
         
         
-    # To get a table where each synergy is counted, messured in percentage of the counts as floats 
-    def get_percentage_table(self): 
-        # Setting up the data_dict
+    def get_percentage_table(self):
+        """
+        Returns a dataframe for a table, where each choice of race(row) and class(column) combination in shown in percentage, 
+        relative to the total amount of choices.
+        """
+        
         cross_count = self.__get_table_data()
         result_data = {}
         for c in self.__single_class_list:
@@ -72,9 +87,12 @@ class ClassRaceSynergy:
         return result
         
         
-    # To get a table where each point shows how often the race(row) picks that class(colum) in the dataset
-    def get_class_picked_by_race_percentage_table(self): 
-        # Setting up the data_dict
+    def get_class_picked_by_race_percentage_table(self):
+        """
+        Returns a dataframe for a table, where each choice of class(column) combination in shown in percentage, 
+        relative to the total amount of choices within that race(row).
+        """
+        
         cross_count = self.__get_table_data()
         result_data = {}
         for c in self.__single_class_list:
