@@ -4,9 +4,12 @@ import matplotlib.pyplot as pl
 
 
 class ClassSynergy:
+    """
+    This class is designed to create a weighted graph based on class occurrences (nodes) and dual class occurrences (edges)
+    """
     
     def __init__(self, dataset = None):
-        #Get data from dataset
+            # get data from dataset
         if dataset is None:
             self.character_data = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
         else:
@@ -14,17 +17,20 @@ class ClassSynergy:
         
         
     def getCharacterData(self):
-        class_data = self.character_data[['justClass']]
-            # dropping duplicates and getting all unique classes
-        drop_class_duplicates = class_data.drop_duplicates()
-        unique_classes = [c for c in drop_class_duplicates['justClass'] if "|" not in c]
-        unique_classes.sort()
-
+        """
+        This method finds all characters that have 2 or more classes
+        """
+        
            # getting all characters that have two or more classes
         self.multiple_classes = [c for c in self.character_data['justClass'] if "|" in c]
 
     def getClassOccurrenceData(self, show_data = True):
-        getting_data = self.getCharacterData()
+        """
+        This method splits all multi-classes and then adds all individual classes, and how many times they occur,
+        to a dictionary with "class name" as value and "occurrences" as key. It then displays the dictionary
+        """
+        
+        self.getCharacterData()
            # separating all the classes by splitting strings at "|" and adding to new list
         separated_classes = []
         for i in self.multiple_classes:
@@ -46,7 +52,12 @@ class ClassSynergy:
 
         
     def getDoubleClassOccurrenceData(self, show_data = True):
-        getting_data = self.getCharacterData()
+        """
+        This method splits all multiclasses and then adds duals together to form a connection (edges).
+        Then it adds all these dual-classes as value in a dictionary and the occurrences as key.
+        """
+        
+        self.getCharacterData()
            # finding all connected classes by separating each connected string and putting them together as dual then adding to new list
         separated_edges = []
         row = []
@@ -72,10 +83,17 @@ class ClassSynergy:
 
 
     def getGraphData(self):
+        """
+        Creates a NetworkX graph and then continues to add all nodes (individual classes) and sets the size of the nodes 
+        equal to "10 * number_of_occurrences". It then adds all the labels to the nodes to display the class names.
+        Lastly it adds all the edges (dual classes) and defines the edge weight (size) equal to "25 / sum_of_all_weights"
+        which is based on the number of occurrences of the double classes
+        """
+        
            # Creating the graph and then starting to add data to it
         G = nx.Graph()
-        getting_data_nodes = self.getClassOccurrenceData(False)
-        getting_data_edges = self.getDoubleClassOccurrenceData(False)
+        self.getClassOccurrenceData(False)
+        self.getDoubleClassOccurrenceData(False)
 
            # creating node sizes (10 * number of occurences) and adding to list
         nodes = self.class_occurrences.values()
