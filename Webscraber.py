@@ -1,8 +1,4 @@
-import matplotlib.pyplot as plt
 import bs4
-import requests
-import urllib.request
-import re
 import argparse
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -89,7 +85,7 @@ if __name__ == '__main__':
             result = Webscraber.webcrawling_using_selenium_soup(str(input))
             print(result)
         except ValueError:
-            print("One or more of the ability scores could not be read as a String") 
+            print("The input-param could not be read as a String") 
     else:
         print("The given input needs exactly 1 argument, key searchword(Str)")    
     
