@@ -13,38 +13,44 @@ class ClassSynergy:
             self.character_data = dataset
         
         
-    def getMulticlassGraphically(self):
-
-           # dropping duplicates and getting all unique classes
+    def getCharacterData(self):
         class_data = self.character_data[['justClass']]
+            # dropping duplicates and getting all unique classes
         drop_class_duplicates = class_data.drop_duplicates()
         unique_classes = [c for c in drop_class_duplicates['justClass'] if "|" not in c]
         unique_classes.sort()
 
            # getting all characters that have two or more classes
-        multiple_classes = [c for c in self.character_data['justClass'] if "|" in c]
+        self.multiple_classes = [c for c in self.character_data['justClass'] if "|" in c]
 
-
+    def getClassOccurrenceData(self, show_data = True):
+        getting_data = self.getCharacterData()
            # separating all the classes by splitting strings at "|" and adding to new list
         separated_classes = []
-        for i in multiple_classes:
+        for i in self.multiple_classes:
             row = i.split("|")
             for r in row:
                 separated_classes.append(r)
 
            # finding every class occurrence and adding to dictionary with "class" as key and "amount" as value
-        class_occurrences = {}
+        self.class_occurrences = {}
         for occ in separated_classes:
-            if occ in class_occurrences:
-                class_occurrences[occ] +=1
+            if occ in self.class_occurrences:
+                self.class_occurrences[occ] +=1
             else:
-                class_occurrences[occ] =1
+                self.class_occurrences[occ] =1
+                
+           # display all class occurrences (nodes)
+        if show_data is True:
+            display(self.class_occurrences)    
 
-
+        
+    def getDoubleClassOccurrenceData(self, show_data = True):
+        getting_data = self.getCharacterData()
            # finding all connected classes by separating each connected string and putting them together as dual then adding to new list
         separated_edges = []
         row = []
-        for q in multiple_classes:
+        for q in self.multiple_classes:
             row = q.split("|")
             for idx_one in range(len(row)):
                 for idx_two in range(idx_one+1,len(row)):
@@ -52,31 +58,34 @@ class ClassSynergy:
 
            # iterating over connected classes (edges) in the new list and adding them to new dictionary
            # with "class connection" as key and "amount" as value
-        edge_occurrences = {}
+        self.edge_occurrences = {}
         for edge in separated_edges:
-            if edge in edge_occurrences:
-                edge_occurrences[edge] +=1
+            if edge in self.edge_occurrences:
+                self.edge_occurrences[edge] +=1
             else:
-                edge_occurrences[edge] =1
+                self.edge_occurrences[edge] =1
 
-           # displaying the nodes and edges (single class occurrence and class connection occurence)
-        display(class_occurrences)    
-        display(edge_occurrences)
+           # display all multiclass occurrences (edges)
+        if show_data is True:
+            display(self.edge_occurrences)
 
 
 
+    def getGraphData(self):
            # Creating the graph and then starting to add data to it
         G = nx.Graph()
+        getting_data_nodes = self.getClassOccurrenceData(False)
+        getting_data_edges = self.getDoubleClassOccurrenceData(False)
 
            # creating node sizes (10 * number of occurences) and adding to list
-        nodes = class_occurrences.values()
+        nodes = self.class_occurrences.values()
         node_sizes = []
         for c in nodes:
             node_size = 10 * c
             node_sizes.append(node_size)
 
            # adding nodes to graph from dictionary and making pos
-        G.add_nodes_from(class_occurrences.keys())
+        G.add_nodes_from(self.class_occurrences.keys())
         pos=nx.circular_layout(G)
 
            # drawing nodes with created sizes, color etc
@@ -84,25 +93,25 @@ class ClassSynergy:
 
            # creating labels from class_occurrence.keys's names and adding to graph with font size
         labels = {}
-        node_list = nodes = class_occurrences.keys()
+        node_list = nodes = self.class_occurrences.keys()
         for node_name in node_list:
             labels[str(node_name)] = str(node_name)
         nx.draw_networkx_labels(G, pos, labels, font_size=8)
 
            # iterating over edges from edge_occurrences and adding edges to graph with weights (being number of occurrences * 0.2)
-        edges = edge_occurrences.keys()
+        edges = self.edge_occurrences.keys()
         for e in edges:
-            value = edge_occurrences[e]
+            value = self.edge_occurrences[e]
             edge_size = 0.2 * value
             G.add_edge(*e, weight=edge_size)
 
+            # displaying graph info for convenience
         print(nx.info(G))
 
            # making list of all weights from edges
         all_weights = []
         for (node1,node2,data) in G.edges(data=True):
                 all_weights.append(data['weight'])
-
 
         unique_weights = list(set(all_weights))
 
