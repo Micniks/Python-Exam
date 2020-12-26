@@ -1,7 +1,9 @@
 import pandas as pd
+import os
 
 default_link = 'https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv'
-default_fileName = 'CharacterDataset.tsv'
+default_fileName = 'CharacterDataset'
+dataset_folder = 'Datasets'
 official_dnd_classes = ['Artificer', 'Barbarian', 'Bard', 'Blood hunter', 'Cleric', 'Druid', 'Fighter', 'Monk', 'Paladin', 'Ranger', 'Rogue', 'Sorcerer', 'Warlock', 'Wizard']
 official_dnd_races = ['Dragonborn', 'Dwarf', 'Elf', 'Gnome', 'Half-Elf', 'Halfling', 'Half-Orc', 'Human', 'Tiefling', 'Aasimar', 'Bugbear', 'Firbolg', 'Goblin', 'Hobgoblin', 'Kenku', 'Kobold', 'Lizardfolk', 'Orc', 'Tabaxi','Triton', 'Changeling', 'Kalashtar', 'Shifter', 'Warforged']
 
@@ -65,4 +67,7 @@ class DND_Dataset_handler:
             return self.dataset.loc[self.dataset[category] == value]
         
     def saveToFile(self, fileName = default_fileName):
-        self.dataset.to_csv(fileName, sep = '\t')
+        if not os.path.exists(dataset_folder):
+            os.makedirs(dataset_folder)
+        path = dataset_folder + '/' + fileName + '.tsv'
+        self.dataset.to_csv(path, sep = '\t')

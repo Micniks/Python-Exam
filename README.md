@@ -6,4 +6,35 @@
 - Marcus
 - Michael
 
-## Exam Project
+## Exam Projekt
+
+*Vores tema ligger inde for statestik om rollespil, specifikt for 5th edition Dungeon and Dragons.*
+
+
+### Beskrivelse af problemstillingen
+
+Problemstillingen for projektet har været at når man er ny til et rollespilssytem, som 5th edition Dungeon and Dragons, så kan der være mange muligheder, hvor man ikke helt ved hvad man bør vælge.
+
+Ud fra dette, har vi ville samle en masse statestik på hvad der er populært ud fra et kendt dataset [her](https://github.com/oganm/dndstats/blob/master/docs/charTable.tsv), for at hjælpe til at lave mere informerede valg.
+
+
+### Hvilke teknologier benyttes
+Vi benytter os af Python med følgende imports brugt i vores kode:
+- pandas
+- numpy
+- argparse
+- sklearn
+- os
+- matplotlib.pyplot
+- bs4
+- requests
+- selenium
+- networkx
+- re
+
+
+### Hvordan køres projektet
+Vores program er lavet til at blive kørt gennem notebook fra filen [Main.ipynb](https://github.com/Micniks/Python-Exam/blob/main/Main.ipynb), som læser de andre filer vi har lavet ind, som er delt efter formål og tanker på læringsmål.
+
+Følgende filer kan køres direkte som egne main:
+* [AbilityScoreAndClassMashineLearning]()
