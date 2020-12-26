@@ -32,9 +32,11 @@ Vi benytter os af Python med følgende imports brugt i vores kode:
 - networkx
 - re
 
+Vi har primært arbejdet i et docker-miljø brugt i undervisning i løbet af semesteret, som bl.a. har påvirket brug af webscrabing ved fx path til geckodriver. Dette miljø kan findes [her](https://github.com/Hartmannsolution/docker_notebooks)
+
 
 ### Hvordan køres projektet
 Vores program er lavet til at blive kørt gennem notebook fra filen [Main.ipynb](https://github.com/Micniks/Python-Exam/blob/main/Main.ipynb), som læser de andre filer vi har lavet ind, som er delt efter formål og tanker på læringsmål.
 
 Følgende filer kan køres direkte som egne main:
-* [AbilityScoreAndClassMashineLearning]()
+* [AbilityScoreAndClassMashineLearning](https://github.com/Micniks/Python-Exam/blob/main/AbilityScoreAndClassMashineLearning.py)
