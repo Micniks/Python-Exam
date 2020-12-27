@@ -64,7 +64,7 @@ class DNDClassPredictor:
         
     def fit_class_model(self):
         """
-        Method to get dict containing a model fit with data from the dataset, along with a score for the mo.del
+        Method to get dict containing a model fit with data from the dataset, along with a score for the model
         """
         
         #Setting up the model, and testing with classification
@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
             classPredictor = DNDClassPredictor()
             result = classPredictor.predict_class_from_ability_scores(ability_scores)
-            msg = "The given ability scores would work well with a class choice of: " + result
+            msg = result
             print(msg) 
         except ValueError:
             print("One or more of the ability scores could not be read as a numbers") 

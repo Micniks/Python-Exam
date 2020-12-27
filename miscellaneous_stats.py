@@ -10,7 +10,11 @@ dataSet = None
 class MiscellaneousClass:
     
     def __init__(self,data_set = None):
-        self.dataSet = data_set
+        
+        if data_set is not None:
+            self.dataSet = data_set
+        else: 
+            self.dataSet = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
 
     
     def __preparing_data(self):
@@ -22,10 +26,8 @@ class MiscellaneousClass:
 
             :return: Data consisting of a dataframe with information about dnd-stats
         """
-        if self.dataSet is not None:
-            data = self.dataSet.copy()
-        else: 
-            data = pd.read_csv('https://raw.githubusercontent.com/oganm/dndstats/master/docs/charTable.tsv', sep='\t')
+        
+        data = self.dataSet.copy()
 
         #print('dataShape before preparation: ', data.shape)
 
@@ -138,7 +140,7 @@ class MiscellaneousClass:
 
         model.fit(level_reshape, HP)
 
-        predicted = model.predict(level_reshape)
+        #predicted = model.predict(level_reshape)
         #The given level_input given as parameter is used
         predict_HP = model.predict([[level_input]])
         #print('predicting new HP for given level_input is: {} '.format(predict_HP[0]))
@@ -166,7 +168,7 @@ class MiscellaneousClass:
 
         model.fit(HP_reshape, level)
 
-        predicted = model.predict(HP_reshape)
+        #predicted = model.predict(HP_reshape)
         #The given HP_input given as parameter is used
         predict_level = model.predict([[HP_input]])
         #print('predicting new level for given HP_input is: {} '.format(predict_level[0]))
@@ -189,7 +191,7 @@ class MiscellaneousClass:
 
         model.fit(level_reshape, HP)    
 
-        predicted = model.predict(level_reshape)
+        #predicted = model.predict(level_reshape)
         return model.score(level_reshape,HP)
 
 
@@ -224,10 +226,3 @@ class MiscellaneousClass:
         print("lower/upper boundary_values: ",lower_level_boundary,",",upper_level_boundary)
 
         return hp >= lower_level_boundary and hp <= upper_level_boundary
-
-    
- 
-     
-   
-
-

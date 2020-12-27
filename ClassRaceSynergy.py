@@ -104,7 +104,7 @@ class ClassRaceSynergy:
                     if(r == 'Total'):
                         break
                     else:
-                        result_data[c].append(round((cross_count[c][r]/cross_count['Total'][r]), 2))
+                        result_data[c].append(round((cross_count[c][r]/cross_count['Total'][r])*100, 2))
         
         # Remove the row and colum for total
         self.__single_class_list.remove('Total')

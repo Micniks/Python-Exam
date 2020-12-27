@@ -65,6 +65,7 @@ class DND_Dataset_handler:
             for c in class_list:
                 if c.capitalize() not in official_dnd_classes:
                     indexes_to_remove.append(idx)
+                    break
         self.dataset.drop(indexes_to_remove, inplace=True)
         
         

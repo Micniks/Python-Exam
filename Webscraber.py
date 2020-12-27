@@ -76,7 +76,7 @@ class Webscraber:
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='This program allows you to input a string, and searches https://roll20.net/compendium/dnd5e/ for that string. Selenium is added, by using the searchbar, and selecting the right object from list, which is then returned')
-    parser.add_argument('-ab','--inputparam', nargs='+', help='<Required> Please give a String value as parameter', required=True)
+    parser.add_argument('-input','--inputparam', nargs='+', help='<Required> Please give a String value as parameter', required=True)
     args = parser.parse_args()
     input = args.inputparam
     
